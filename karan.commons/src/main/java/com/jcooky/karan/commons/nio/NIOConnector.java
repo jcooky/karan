@@ -16,6 +16,8 @@ import com.jcooky.karan.commons.AbstractIOFactory;
 import com.jcooky.karan.commons.Connector;
 import com.jcooky.karan.commons.Transport;
 import com.jcooky.karan.commons.buffer.IoBuffer;
+import com.jcooky.karan.commons.listeners.ChannelCloseListener;
+import com.jcooky.karan.commons.listeners.TransportCloseListener;
 
 public class NIOConnector implements Connector {
 	private AbstractIOFactory ioFactory;
@@ -27,7 +29,6 @@ public class NIOConnector implements Connector {
 	
 	public Transport connect(InetAddress host, int port) {
 		SocketChannel socketChannel;
-		NIOReadSelector nioReadSelector;
 		BlockingQueue<IoBuffer> q = new LinkedBlockingQueue<IoBuffer>();
 		
 		try {
@@ -36,18 +37,33 @@ public class NIOConnector implements Connector {
 			socketChannel.configureBlocking(false);
 			socketChannel.register(readSelector, SelectionKey.OP_READ);
 			
-			nioReadSelector = new NIOReadSelector(this.ioFactory, readSelector, queueMapper);
+			final NIOReadSelector nioReadSelector = new NIOReadSelector(this.ioFactory, readSelector, queueMapper);
+			final Transport transport = (NIOTransport)ioFactory.createTransport(socketChannel, q);
+			nioReadSelector.addForceCloseListener(new ChannelCloseListener() {
+
+				public void onClosed(String channelId) {
+					nioReadSelector.close();
+					transport.close();
+				}
+				
+			});
 			
+			transport.addCloseListener(new TransportCloseListener() {
+
+				public void onClosed(Transport transport) {
+					nioReadSelector.close();
+				}
+				
+			});
+			
+			queueMapper.put(transport.getId(), q);
+			
+			return transport;
 		} catch(UnknownHostException e) {
 			throw new NIOException(e);
 		} catch(IOException e) {
 			throw new NIOException(e);
 		}
-		
-		NIOTransport nioTransport = (NIOTransport)ioFactory.createTransport(socketChannel, q);
-		queueMapper.put(nioTransport.getId(), q);
-		
-		return nioTransport;
 	}
 
 }

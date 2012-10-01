@@ -12,7 +12,7 @@ import java.util.concurrent.BlockingQueue;
 
 import com.jcooky.karan.commons.AbstractIOFactory;
 import com.jcooky.karan.commons.buffer.IoBuffer;
-import com.jcooky.karan.commons.listeners.CloseListener;
+import com.jcooky.karan.commons.listeners.ChannelCloseListener;
 
 public class NIOReadSelector implements Runnable {
 	private static final int DEFAULT_BUFFER_SIZE = 1024;
@@ -21,7 +21,7 @@ public class NIOReadSelector implements Runnable {
 	private Selector readSelector;
 	private IoBuffer readBuffer;
 	private boolean running = true;
-	private Set<CloseListener> forceCloseListeners = new HashSet<CloseListener>();
+	private Set<ChannelCloseListener> forceCloseListeners = new HashSet<ChannelCloseListener>();
 	private AbstractIOFactory ioFactory;
 	
 	public NIOReadSelector(AbstractIOFactory ioFactory, Selector readSelector, Map<String, BlockingQueue<IoBuffer>> q) {
@@ -35,13 +35,13 @@ public class NIOReadSelector implements Runnable {
 		return this.readSelector;
 	}
 	
-	public void addForceCloseListener(CloseListener listener) {
+	public void addForceCloseListener(ChannelCloseListener listener) {
 		forceCloseListeners.add(listener);
 	}
 	
-	public void triggerOnClosed() {
-		for (CloseListener listener : forceCloseListeners) {
-			listener.onClosed();
+	public void triggerOnClosed(String channelId) {
+		for (ChannelCloseListener listener : forceCloseListeners) {
+			listener.onClosed(channelId);
 		}
 	}
 	
@@ -76,8 +76,7 @@ public class NIOReadSelector implements Runnable {
 							System.out
 									.println("disconnected form server: end-of-stream");
 							channel.close();
-							close();
-							triggerOnClosed();
+							triggerOnClosed((String)key.attachment());
 							break;
 						} else if (nBytes > 0) {
 	

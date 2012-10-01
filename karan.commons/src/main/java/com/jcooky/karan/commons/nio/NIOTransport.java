@@ -21,6 +21,7 @@ public class NIOTransport extends AbstractTransport {
 	
 	private SocketChannel socketChannel;
 	private BlockingQueue<IoBuffer> readQ;
+	private boolean closed = false;
 	
 	public NIOTransport(AbstractIOFactory ioFactory, SocketChannel socketChannel, BlockingQueue<IoBuffer> q) {
 		this.socketChannel = socketChannel;
@@ -68,16 +69,26 @@ public class NIOTransport extends AbstractTransport {
 			}
 		} catch (ClosedChannelException e) {
 			logger.error(e.getMessage(), e);
-			throw new RuntimeException(e);
-		} catch (Exception e) {
+			throw new NIOException(e);
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
+			throw new NIOException(e);
 		} finally {
 			
 		}
 		writeBuffer.rewind();
 	}
+	
+	public boolean isClosed() {
+		return closed;
+	}
 
 	public void close() {
+		if(!isClosed()) {
+			return ;
+		}
 		try {
+			closed = true;
 			if (!socketChannel.isConnected()) {
 				socketChannel.close();
 			}

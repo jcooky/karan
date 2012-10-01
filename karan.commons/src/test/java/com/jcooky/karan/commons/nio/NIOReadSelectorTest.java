@@ -7,9 +7,12 @@ import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -47,9 +50,8 @@ public class NIOReadSelectorTest {
 		}
 
 		@Override
-		public Transport createServerTransport(SocketChannel socketChannel) {
-			// TODO Auto-generated method stub
-			return null;
+		public IoBuffer createIoBuffer() {
+			return IoBuffer.allocate(1024);
 		}
 
 		@Override
@@ -82,6 +84,8 @@ public class NIOReadSelectorTest {
 	
 	@Before
 	public void setUp() {
+		Map<String, BlockingQueue<IoBuffer>> qMapper = new HashMap<String, BlockingQueue<IoBuffer>>();
+		qMapper.put(UUID.randomUUID().toString(), q);
 		MockitoAnnotations.initMocks(this);
 		
 		Mockito.when(mockSelector.selectedKeys()).thenReturn(mockKeys);
@@ -96,7 +100,7 @@ public class NIOReadSelectorTest {
 		Mockito.when(mockIterator.next()).thenReturn(mockKey);
 		Mockito.when(mockKey.channel()).thenReturn(mockSc);
 		
-		readSelector = new NIOReadSelector(ioFactory, mockSelector, q);
+		readSelector = new NIOReadSelector(ioFactory, mockSelector, qMapper);
 	}
 	
 	@Test
