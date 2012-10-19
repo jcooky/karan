@@ -27,9 +27,14 @@ import org.mockito.Spy;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import com.jcooky.karan.commons.AbstractIOFactory;
-import com.jcooky.karan.commons.Transport;
-import com.jcooky.karan.commons.buffer.IoBuffer;
+import com.jcooky.karan.commons.network.AbstractIOFactory;
+import com.jcooky.karan.commons.network.Acceptor;
+import com.jcooky.karan.commons.network.Connector;
+import com.jcooky.karan.commons.network.Session;
+import com.jcooky.karan.commons.network.Transfer;
+import com.jcooky.karan.commons.network.Transport;
+import com.jcooky.karan.commons.network.buffer.IoBuffer;
+import com.jcooky.karan.commons.network.nio.NIOReadSelector;
 import com.jcooky.karan.commons.test.utils.Counter;
 
 public class NIOReadSelectorTest {
@@ -42,6 +47,31 @@ public class NIOReadSelectorTest {
 			return ioBuffers;
 		}
 		
+		public Acceptor createAcceptor() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		public Connector createConnector() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		public Session createSession(Transport transport) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		public <T> Transfer<T> createTransfer(Session session) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		public <T> Transfer<T> createTransfer(Transport transport) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
 		@Override
 		public Transport createTransport(SocketChannel socketChannel,
 				BlockingQueue<IoBuffer> readQ) {
@@ -80,7 +110,7 @@ public class NIOReadSelectorTest {
 	private boolean resultHasNext = true;
 	private NIOReadSelector readSelector;
 	
-	private AbstractIOFactory ioFactory = AbstractIOFactory.create("Stub");
+	private AbstractIOFactory ioFactory = AbstractIOFactory.get("Stub");
 	
 	@Before
 	public void setUp() {
@@ -112,7 +142,6 @@ public class NIOReadSelectorTest {
 				synchronized(callCounter) {
 					
 					if (callCounter.count() >= 1) {
-						readSelector.close();
 						resultHasNext = false;
 						return 0;
 					} else {
