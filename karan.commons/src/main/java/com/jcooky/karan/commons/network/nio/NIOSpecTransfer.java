@@ -9,7 +9,7 @@ import com.jcooky.karan.commons.network.fields.AbstractField;
 import com.jcooky.karan.commons.network.fields.Field;
 import com.jcooky.karan.commons.network.spec.SpecBuilder;
 
-public class NIOSpecTransfer extends Transfer<Spec> {
+public class NIOSpecTransfer implements Transfer<Spec> {
 	
 	private Session session;
 	private AbstractIOFactory ioFactory;
