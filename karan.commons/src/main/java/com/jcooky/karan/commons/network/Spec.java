@@ -5,6 +5,6 @@ import com.jcooky.karan.commons.network.fields.Field;
 
 public interface Spec {
 	public int getType();
-	public Field<?> getHeadField();
+	public IoBuffer toBytes();
 	public abstract void build(IoBuffer ioBuffer);
 }
