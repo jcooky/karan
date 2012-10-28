@@ -28,11 +28,9 @@ public class NIOSpecTransfer extends Transfer<Spec> {
 	public void send(Spec spec) {
 		IoBuffer buf = null;
 		try {
-			buf = ioFactory.createIoBuffer(); 
-			generateTypeBytes(buf, spec.getType());
-			for (Field<?> field = spec.getHeadField(); field != null; field = field.next()) {
-				buf.put(field.toBytes());
-			}
+			buf = ioFactory.createIoBuffer();
+			spec.toBytes(buf);
+			buf.flip();
 			session.send(buf);
 		} finally {
 			if (buf != null) {

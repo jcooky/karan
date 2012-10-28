@@ -12,17 +12,12 @@ public abstract class AbstractSpec implements Spec {
 	
 	public abstract int getType();
 	
-	public IoBuffer toBytes() {
-		IoBuffer buffer = IoBuffer.allocate(128, true);
-		buffer.setAutoExpand(true);
-		
+	public void toBytes(IoBuffer buffer) {
 		buffer.putInt(getType());
 		
 		for (Field<?> field = head; field != null; field = field.next()) {
 			buffer.put(field.toBytes());
 		}
-		
-		return buffer;
 	}
 	
 	public void build(IoBuffer ioBuffer) {
