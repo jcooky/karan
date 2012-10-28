@@ -5,7 +5,7 @@ import com.jcooky.karan.commons.network.fields.primitive.IntegerField;
 import com.jcooky.karan.commons.network.fields.primitive.StringField;
 
 public abstract class AbstractField<T> implements Field<T> {
-	protected T val;
+	private T val;
 	private Field<?> prev = null, next = null;
 	
 	public AbstractField(Field<?> prev) {

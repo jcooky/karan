@@ -21,7 +21,7 @@ public class StringField extends AbstractField<String> {
 	public IoBuffer toBytes() {
 		byte[] bytes;
 		try {
-			bytes = val.getBytes("UTF-8");
+			bytes = get().getBytes("UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			logger.error(e.getMessage(), e);
 			throw new RuntimeException(e);
@@ -44,7 +44,7 @@ public class StringField extends AbstractField<String> {
 		buf.get(bytes);
 		
 		try {
-			val = new String(bytes, "UTF-8");
+			set(new String(bytes, "UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 			logger.error(e.getMessage(), e);
 			throw new RuntimeException(e);
@@ -53,7 +53,7 @@ public class StringField extends AbstractField<String> {
 
 	public int length() {
 		try {
-			return val.getBytes("UTF-8").length + 2;
+			return get().getBytes("UTF-8").length + 2;
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
 		}

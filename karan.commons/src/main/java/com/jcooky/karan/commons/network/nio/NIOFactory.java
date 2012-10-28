@@ -10,7 +10,9 @@ import com.jcooky.karan.commons.network.Connector;
 import com.jcooky.karan.commons.network.Session;
 import com.jcooky.karan.commons.network.Transfer;
 import com.jcooky.karan.commons.network.Transport;
+import com.jcooky.karan.commons.network.buffer.CachedBufferAllocator;
 import com.jcooky.karan.commons.network.buffer.IoBuffer;
+import com.jcooky.karan.commons.network.buffer.IoBufferAllocator;
 
 public class NIOFactory extends AbstractIOFactory {
 	public static final String TYPE = "NIO";
@@ -20,6 +22,7 @@ public class NIOFactory extends AbstractIOFactory {
 	}
 	
 	private Connector connector = null;
+	private IoBufferAllocator allocator = new CachedBufferAllocator();
 
 	public Session createSession(Transport transport) {
 		return new NIOSession(this, transport);
@@ -51,7 +54,7 @@ public class NIOFactory extends AbstractIOFactory {
 	}
 
 	public IoBuffer createIoBuffer(int capacity) {
-		return IoBuffer.allocate(capacity, true);
+		return allocator.allocate(capacity, true);
 	}
 
 	public IoBuffer createIoBuffer() {

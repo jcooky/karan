@@ -53,7 +53,7 @@ public class NIOTransport extends AbstractTransport {
 
 				}
 			}
-			logger.debug("finish sending data : {}B", nBytes);
+			logger.debug("finish sending data : {} byte", nBytes);
 		} catch (ClosedChannelException e) {
 			logger.error(e.getMessage(), e);
 			throw new NIOException(e);
@@ -63,7 +63,6 @@ public class NIOTransport extends AbstractTransport {
 		} finally {
 			
 		}
-		bytes.rewind();
 	}
 	
 	public boolean isClosed() {

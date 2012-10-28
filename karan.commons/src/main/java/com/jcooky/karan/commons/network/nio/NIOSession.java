@@ -1,7 +1,9 @@
 package com.jcooky.karan.commons.network.nio;
 
-import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.jcooky.karan.commons.network.AbstractIOFactory;
 import com.jcooky.karan.commons.network.Session;
@@ -9,6 +11,7 @@ import com.jcooky.karan.commons.network.Transport;
 import com.jcooky.karan.commons.network.buffer.IoBuffer;
 
 public class NIOSession implements Session {
+	private static final Logger logger = LoggerFactory.getLogger(NIOSession.class);
 	
 	private Transport transport;
 	private AbstractIOFactory ioFactory;
@@ -30,8 +33,11 @@ public class NIOSession implements Session {
 		buf = remainingBuffer;
 		
 		if (buf != null) {
-			if (buf.get() == 0) {
+			switch(buf.get()) {
+			case 0:
 				return recv();
+			case 1:
+				break;
 			}
 		}
 		
@@ -42,21 +48,40 @@ public class NIOSession implements Session {
 		if (!isOnline()) {
 			throw new RefusedConnectionException();
 		}
+		IoBuffer buf = null;
 		try {
-			bytes.put(0, (byte)1);
-			transport.send(bytes);
+			buf = ioFactory.createIoBuffer(bytes.capacity() + 1);
+			buf.put((byte)1);
+			buf.put(bytes);
+			buf.flip();
+			transport.send(buf);
+			
 		} catch(RuntimeException e) {
 			if (e.getCause() instanceof ClosedChannelException) {
 				throw new RefusedConnectionException(e.getCause());
+			}
+		} finally {
+			if (buf != null) {
+				buf.free();
 			}
 		}
 	}
 	
 	private void ping() {
-		IoBuffer buf = ioFactory.createIoBuffer(1);
-		buf.put((byte)1);
+		IoBuffer buf = null; 
 		
-		transport.send(buf);
+		try {
+			logger.debug("send ping!");
+			
+			buf = ioFactory.createIoBuffer(1);
+			buf.put((byte)0);
+			buf.flip();
+			transport.send(buf);
+		} finally {
+			if (buf != null) {
+				buf.free();
+			}
+		}
 	}
 
 	public boolean isOnline() {

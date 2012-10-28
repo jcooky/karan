@@ -9,7 +9,7 @@ import com.jcooky.karan.commons.network.fields.AbstractField;
 import com.jcooky.karan.commons.network.fields.Field;
 import com.jcooky.karan.commons.network.spec.SpecBuilder;
 
-public class NIOSpecTransfer implements Transfer<Spec> {
+public class NIOSpecTransfer extends Transfer<Spec> {
 	
 	private Session session;
 	private AbstractIOFactory ioFactory;
@@ -28,11 +28,9 @@ public class NIOSpecTransfer implements Transfer<Spec> {
 	public void send(Spec spec) {
 		IoBuffer buf = null;
 		try {
-			buf = ioFactory.createIoBuffer(); 
-			generateTypeBytes(buf, spec.getType());
-			for (Field<?> field = spec.getHeadField(); field != null; field = field.next()) {
-				buf.put(field.toBytes());
-			}
+			buf = ioFactory.createIoBuffer();
+			spec.toBytes(buf);
+			buf.flip();
 			session.send(buf);
 		} finally {
 			if (buf != null) {
