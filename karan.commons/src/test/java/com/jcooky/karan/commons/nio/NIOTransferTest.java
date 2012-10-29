@@ -1,5 +1,9 @@
 package com.jcooky.karan.commons.nio;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.net.InetAddress;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -16,6 +20,7 @@ import com.jcooky.karan.commons.network.Connector;
 import com.jcooky.karan.commons.network.Spec;
 import com.jcooky.karan.commons.network.Transfer;
 import com.jcooky.karan.commons.network.Transport;
+import com.jcooky.karan.commons.network.buffer.IoBuffer;
 import com.jcooky.karan.commons.network.fields.Field;
 import com.jcooky.karan.commons.network.fields.primitive.LongField;
 import com.jcooky.karan.commons.network.fields.primitive.StringField;
@@ -31,19 +36,19 @@ public class NIOTransferTest {
 	private Acceptor acceptor = ioFactory.createAcceptor();
 	private ExecutorService service = Executors.newCachedThreadPool();
 	
-	private static class TestSpec extends AbstractSpec {
+	public static class TestSpec extends AbstractSpec {
 		private Field<String> text = new StringField(null);
 		private Field<Long> timestamp = new LongField(text);
 		
 		static {
-			SpecBuilder.register(0, TestSpec.class);
+			SpecBuilder.register((byte)0, TestSpec.class);
 		}
 		
 		public TestSpec() {
 			setHead(text);
 		}
 
-		public int getType() {
+		public byte getType() {
 			return 0;
 		}
 		
@@ -70,7 +75,9 @@ public class NIOTransferTest {
 	}
 	
 	@Test
-	public void testSendAndRecv() {
+	public void testSendAndRecv() throws Exception {
+		final String text = IOUtils.toString(R.text, "UTF-8");
+		final Long timestamp = System.nanoTime();
 		service.execute(new Runnable() {
 			public void run() {
 				Transfer<Spec> transfer = null;
@@ -80,12 +87,10 @@ public class NIOTransferTest {
 					
 					transfer = ioFactory.createTransfer(transport);
 					TestSpec ts = new TestSpec();
-					ts.setText(IOUtils.toString(R.text, "UTF-8"));
-					ts.setTimestamp(System.nanoTime());
+					ts.setText(text);
+					ts.setTimestamp(timestamp);
 					
 					transfer.send(ts);
-				} catch(Exception e) {
-					throw new RuntimeException();
 				} finally {
 					if (transfer != null) {
 						transfer.close();
@@ -93,7 +98,16 @@ public class NIOTransferTest {
 				}
 			}
 		});
+
+		TestSpec ts = null;
+		Transport transport = connector.connect(InetAddress.getLocalHost(), 8080);
+		Transfer<TestSpec> transfer = ioFactory.createTransfer(transport);
+		while ((ts = transfer.recv()) == null);
 		
+		assertNotNull(ts);
+		assertEquals(text, ts.getText());
+		assertEquals(timestamp, ts.getTimestamp());
 		
+		transfer.close();
 	}
 }

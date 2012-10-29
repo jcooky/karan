@@ -10,10 +10,10 @@ public abstract class AbstractSpec implements Spec {
 		this.head = head;
 	}
 	
-	public abstract int getType();
+	public abstract byte getType();
 	
 	public void toBytes(IoBuffer buffer) {
-		buffer.putInt(getType());
+		buffer.put(getType());
 		
 		for (Field<?> field = head; field != null; field = field.next()) {
 			buffer.put(field.toBytes());

@@ -26,9 +26,9 @@ public class StringField extends AbstractField<String> {
 			logger.error(e.getMessage(), e);
 			throw new RuntimeException(e);
 		}
-		IoBuffer buf = IoBuffer.allocate(bytes.length + 1);
+		IoBuffer buf = IoBuffer.allocate(length());
 		buf.put(FieldCode.STRING.code());
-		buf.putInt(bytes.length);
+		buf.put((byte)bytes.length);
 		buf.put(bytes);
 		return buf;
 	}
@@ -53,7 +53,7 @@ public class StringField extends AbstractField<String> {
 
 	public int length() {
 		try {
-			return get().getBytes("UTF-8").length + 2;
+			return get().getBytes("UTF-8").length + Character.SIZE + Byte.SIZE;
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
 		}

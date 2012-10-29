@@ -45,7 +45,7 @@ public class NIOTransport extends AbstractTransport {
 			while (nBytes != toWrite) {
 				int b = socketChannel.write(bytes.buf());
 				nBytes += b;
-				logger.debug("sending data : {}B", b);
+				logger.debug("sending data : {} bytes", b);
 
 				try {
 					Thread.sleep(CHANNEL_WRITE_SLEEP);
@@ -53,7 +53,7 @@ public class NIOTransport extends AbstractTransport {
 
 				}
 			}
-			logger.debug("finish sending data : {} byte", nBytes);
+			logger.debug("finish sending data : {} bytes", nBytes);
 		} catch (ClosedChannelException e) {
 			logger.error(e.getMessage(), e);
 			throw new NIOException(e);

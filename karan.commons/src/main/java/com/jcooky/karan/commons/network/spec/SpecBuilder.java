@@ -23,17 +23,16 @@ public class SpecBuilder {
 	}
 	
 	private static final Logger logger = LoggerFactory.getLogger(SpecBuilder.class);
-	private final static Map<Integer, Class<? extends Spec>> specMap = new HashMap<Integer, Class<? extends Spec>>();
+	private final static Map<Byte, Class<? extends Spec>> specMap = new HashMap<Byte, Class<? extends Spec>>();
 	
-	public static void register(Integer type, Class<? extends Spec> cls) {
+	public static void register(Byte type, Class<? extends Spec> cls) {
 		specMap.put(type, cls);
 	}
 	
 	public static Spec build(IoBuffer ioBuffer) {
-		Field<Integer> type = AbstractField.getField("int");
-		type.fromBytes(ioBuffer);
+		int type = ioBuffer.get();
 		
-		Class<? extends Spec> specClass = specMap.get(type.get());
+		Class<? extends Spec> specClass = specMap.get(type);
 		if (specClass != null) {
 			Spec spec;
 			try {

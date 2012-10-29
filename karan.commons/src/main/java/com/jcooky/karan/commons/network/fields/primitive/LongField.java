@@ -7,7 +7,6 @@ import com.jcooky.karan.commons.network.fields.Field;
 import com.jcooky.karan.commons.util.ByteUtils;
 
 public class LongField extends AbstractField<Long> {
-	private Long data;
 	
 	public LongField(Field<?> prev) {
 		super(prev);
@@ -16,7 +15,7 @@ public class LongField extends AbstractField<Long> {
 	public IoBuffer toBytes() {
 		byte []bytes = new byte[length()];
 		bytes[0] = FieldCode.Long.code();
-		ByteUtils.toBytes(data, bytes, 1);
+		ByteUtils.toBytes(get(), bytes, 1);
 		
 		return IoBuffer.wrap(bytes);
 	}
@@ -30,11 +29,11 @@ public class LongField extends AbstractField<Long> {
 		for (int i = 0; i < 8; i++) {
 			qword = (qword << 8) + (bytes.get() & 0xFF);
 		}
-		data = qword;
+		set(qword);
 	}
 
 	public int length() {
-		return Long.SIZE + 1;
+		return Long.SIZE + Byte.SIZE;
 	}
 
 }
