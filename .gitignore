@@ -2,3 +2,6 @@
 .settings/*
 */.classpath
 */.settings/*
+/target
+/.classpath
+/.gitignore

@@ -1,5 +1,0 @@
-namespace com.google.code.jcooky.rpc.compiler;
-
-service EchoService {
-	string echo(string msg);
-};

@@ -1,15 +1,78 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.jcooky.karan</groupId>
+  <groupId>com.github.karan</groupId>
   <artifactId>karan</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  <name>karan.parent</name>
-  <description>Karan Parent POM</description>
-  <modules>
-  	<module>karan.commons</module>
-  	<module>karan.compiler</module>
-  	<module>karan.server</module>
-  	<module>karan.client</module>
-  </modules>
+  <version>0.0.1</version>
+  <name>karan</name>
+  <description>Karan Project
+
+건국대학교 네트워크프로그래밍 프로젝트
+</description>
+  <properties>
+  	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  	<maven.compiler.source>1.6</maven.compiler.source>
+  	<maven.compiler.target>1.6</maven.compiler.target>
+  </properties>
+  <scm>
+  	<url>https://github.com/jcooky/karan.git</url>
+  	<connection>git</connection>
+  	<developerConnection>jcooky</developerConnection>
+  	<tag>temp</tag>
+  </scm>
+  <url>https://github.com/jcooky/karan</url>
+  <organization>
+  	<name>JCooky</name>
+  	<url>https://github.com/jcooky</url>
+  </organization>
+  <issueManagement>
+  	<system>github</system>
+  	<url>https://github.com/jcooky/karan/issues</url>
+  </issueManagement>
+  <ciManagement>
+  	<system>travis-ci</system>
+  	<url>https://travis-ci.org/</url>
+  </ciManagement>
+  <build>
+  	<plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.5.1</version>
+        <configuration>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+  	<dependency>
+  		<groupId>org.apache.mina</groupId>
+  		<artifactId>mina-core</artifactId>
+  		<version>2.0.7</version>
+  		<exclusions>
+  			<exclusion>
+  				<artifactId>slf4j-api</artifactId>
+  				<groupId>org.slf4j</groupId>
+  			</exclusion>
+  		</exclusions>
+  	</dependency>
+  	<dependency>
+  		<groupId>junit</groupId>
+  		<artifactId>junit</artifactId>
+  		<version>4.10</version>
+  		<scope>test</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.slf4j</groupId>
+  		<artifactId>slf4j-api</artifactId>
+  		<version>1.7.2</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.mockito</groupId>
+  		<artifactId>mockito-core</artifactId>
+  		<version>1.9.5</version>
+  		<scope>test</scope>
+  	</dependency>
+  </dependencies>
 </project>
