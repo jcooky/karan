@@ -1,13 +1,14 @@
 package com.github.karan.message;
 
-public abstract class AbstractMessage {
-	private MessageType type;
+public class AbstractMessage {
+	private int messageType;
 
-	public MessageType getType() {
-		return type;
+	public int getMessageType() {
+		return messageType;
 	}
 
-	public void setType(MessageType type) {
-		this.type = type;
+	public void setMessageType(int messageType) {
+		this.messageType = messageType;
 	}
+	
 }

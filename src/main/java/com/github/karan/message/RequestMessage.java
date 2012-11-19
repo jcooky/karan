@@ -1,7 +1,9 @@
 package com.github.karan.message;
 
+
 public class RequestMessage extends AbstractMessage {
 	private String serviceName;
+	private String interfaceName;
 
 	public String getServiceName() {
 		return serviceName;
@@ -10,8 +12,13 @@ public class RequestMessage extends AbstractMessage {
 	public void setServiceName(String serviceName) {
 		this.serviceName = serviceName;
 	}
-	
-	public static long size() {
-		return getType().byteValue() + 
+
+	public String getInterfaceName() {
+		return interfaceName;
 	}
+
+	public void setInterfaceName(String interfaceName) {
+		this.interfaceName = interfaceName;
+	}
+	
 }

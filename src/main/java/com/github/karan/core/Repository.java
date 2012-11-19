@@ -1,12 +1,13 @@
 package com.github.karan.core;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.github.karan.exception.ServicePutException;
 
 public class Repository {
-	private Map<String, Object> services = new HashMap<String, Object>();
+	private Map<String, Object> services = Collections.synchronizedMap(new HashMap<String, Object>());
 	
 	public void put(String serviceName, Class<?> serviceClazz) {
 		try {
