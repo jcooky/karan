@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.github.karan.exception.ServicePutException;
 
-public class Repository {
+public class ServiceRepository {
 	private Map<String, Object> services = Collections.synchronizedMap(new HashMap<String, Object>());
 	
 	public void put(String serviceName, Class<?> serviceClazz) {
