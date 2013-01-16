@@ -5,13 +5,47 @@
 	<artifactId>karan</artifactId>
 	<version>0.0.1</version>
 	<name>karan</name>
-	<description>Karan Project
-</description>
+	<description>Karan Project</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.6</maven.compiler.source>
 		<maven.compiler.target>1.6</maven.compiler.target>
 	</properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.mina</groupId>
+            <artifactId>mina-core</artifactId>
+            <version>2.0.7</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-api</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>1.9.5</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.jcooky.mina.thrift</groupId>
+            <artifactId>mina-thrift</artifactId>
+            <version>0.0.2</version>
+        </dependency>
+    </dependencies>
 	<scm>
 		<url>https://github.com/jcooky/karan.git</url>
 		<connection>git</connection>
@@ -31,12 +65,16 @@
 		<system>travis-ci</system>
 		<url>https://travis-ci.org/</url>
 	</ciManagement>
-	<repositories>
-		<repository>
-			<id>releases</id>
-			<url>http://misoteam.iptime.org:9090/content/repositories/releases</url>
-		</repository>
-	</repositories>
+    <repositories>
+        <repository>
+            <id>YOUR-PROJECT-NAME-mvn-repo</id>
+            <url>https://raw.github.com/jcooky/mina-thrift/mvn-repo/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
 	<build>
 		<plugins>
 			<plugin>
@@ -79,39 +117,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	<dependencies>
-		<dependency>
-			<groupId>org.apache.mina</groupId>
-			<artifactId>mina-core</artifactId>
-			<version>2.0.7</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>slf4j-api</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.10</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-			<version>1.9.5</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.github.jcooky.mina.thrift</groupId>
-			<artifactId>mina-thrift</artifactId>
-			<version>0.0.2</version>
-		</dependency>
-	</dependencies>
+
 </project>

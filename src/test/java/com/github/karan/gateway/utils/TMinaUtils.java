@@ -1,12 +1,11 @@
 package com.github.karan.gateway.utils;
 
-import org.apache.thrift.TProcessor;
-import org.apache.thrift.protocol.TBinaryProtocol;
-import org.apache.thrift.transport.TTransportFactory;
-
 import com.github.jcooky.mina.thrift.TIoAcceptorServerTransport;
 import com.github.jcooky.mina.thrift.TIoSessionTransport;
 import com.github.jcooky.mina.thrift.TMinaServer;
+import org.apache.thrift.TProcessor;
+import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.transport.TTransportFactory;
 
 public class TMinaUtils {
 	public TMinaServer getServer(int port, TProcessor processor) {

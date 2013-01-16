@@ -1,11 +1,10 @@
 package com.github.karan.gateway;
 
-import java.nio.ByteBuffer;
-
-import org.apache.thrift.TException;
-
 import com.github.karan.gateway.gen.Gateway;
 import com.github.karan.gateway.gen.InvalidExcuteException;
+import org.apache.thrift.TException;
+
+import java.nio.ByteBuffer;
 
 public class GatewayImpl implements Gateway.Iface {
 
@@ -35,7 +34,7 @@ public class GatewayImpl implements Gateway.Iface {
 
 	@Override
 	public ByteBuffer execute(String uri, ByteBuffer thriftBinaries) throws InvalidExcuteException, TException {
-		
+		 return null;
 	}
 
 }
