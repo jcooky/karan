@@ -45,6 +45,11 @@
             <artifactId>mina-thrift</artifactId>
             <version>0.0.2</version>
         </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
     </dependencies>
 	<scm>
 		<url>https://github.com/jcooky/karan.git</url>
@@ -93,11 +98,9 @@
 				<executions>
 					<execution>
 						<id>exec</id>
-						<phase>resources</phase>
+						<phase>process-resources</phase>
 						<goals>
-							<goal>install</goal>
-							<goal>package</goal>
-							<goal>deploy</goal>
+							<goal>exec</goal>
 						</goals>
 					</execution>
 				</executions>

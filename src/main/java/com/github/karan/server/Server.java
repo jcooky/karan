@@ -1,7 +1,8 @@
-package com.github.karan;
+package com.github.karan.server;
 
-import com.github.jcooky.mina.thrift.TIoAcceptorServerTransport;
 import com.github.jcooky.mina.thrift.TMinaServer;
+import com.github.karan.server.gateway.GatewayImpl;
+import com.github.karan.server.gateway.gen.Gateway;
 
 import java.io.IOException;
 
@@ -16,14 +17,15 @@ public class Server {
     private TMinaServer server;
 
     public void serve(int port) throws IOException {
-        server = new TMinaServer(new TMinaServer.Args(
-                new TIoAcceptorServerTransport(port)
-        ));
+        server = TMinaServer.getServer(port,
+                new Gateway.Processor <Gateway.Iface>(new GatewayImpl()));
 
         server.serve();
     }
 
     public void stop() {
-        server.stop();
+        if (server != null) {
+            server.stop();
+        }
     }
 }

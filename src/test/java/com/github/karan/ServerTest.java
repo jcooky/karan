@@ -1,5 +1,6 @@
 package com.github.karan;
 
+import com.github.karan.server.Server;
 import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;
