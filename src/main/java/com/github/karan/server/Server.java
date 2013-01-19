@@ -15,6 +15,19 @@ import java.io.IOException;
  */
 public class Server {
     private TMinaServer server;
+    private Gateway.Iface gateway ;
+
+    public Server() {
+        gateway = new GatewayImpl();
+    }
+
+    public void setGateway(Gateway.Iface gateway) {
+        this.gateway = gateway;
+    }
+
+    public Gateway.Iface getGateway() {
+        return gateway;
+    }
 
     public void serve(int port) throws IOException {
         server = TMinaServer.getServer(port,

@@ -98,25 +98,45 @@
 				<executions>
 					<execution>
 						<id>exec</id>
-						<phase>process-resources</phase>
+						<phase>generate-sources</phase>
 						<goals>
 							<goal>exec</goal>
 						</goals>
+                        <configuration>
+                            <executable>thrift</executable>
+                            <!-- optional -->
+                            <workingDirectory>${basedir}</workingDirectory>
+                            <arguments>
+                                <argument>-debug</argument>
+                                <argument>-out</argument>
+                                <argument>src/main/java</argument>
+                                <argument>--gen</argument>
+                                <argument>java</argument>
+                                <argument>src/main/thrift/Gateway.thrift</argument>
+                            </arguments>
+                        </configuration>
 					</execution>
+                    <execution>
+                        <id>exec-test</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>thrift</executable>
+                            <!-- optional -->
+                            <workingDirectory>${basedir}</workingDirectory>
+                            <arguments>
+                                <argument>-debug</argument>
+                                <argument>-out</argument>
+                                <argument>src/test/java</argument>
+                                <argument>--gen</argument>
+                                <argument>java</argument>
+                                <argument>src/test/thrift/TestService.thrift</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
 				</executions>
-				<configuration>
-					<executable>thrift</executable>
-					<!-- optional -->
-					<workingDirectory>${basedir}</workingDirectory>
-					<arguments>
-						<argument>-debug</argument>
-						<argument>-out</argument>
-						<argument>src/main/java</argument>
-						<argument>--gen</argument>
-						<argument>java</argument>
-						<argument>src/main/thrift/Gateway.thrift</argument>
-					</arguments>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

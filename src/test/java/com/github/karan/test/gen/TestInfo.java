@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package com.github.karan.server.gateway.gen;
+package com.github.karan.test.gen;
 
 import org.apache.thrift.scheme.IScheme;
 import org.apache.thrift.scheme.SchemeFactory;
@@ -30,22 +30,22 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class InvalidExcuteException extends TException implements org.apache.thrift.TBase<InvalidExcuteException, InvalidExcuteException._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("InvalidExcuteException");
+public class TestInfo implements org.apache.thrift.TBase<TestInfo, TestInfo._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("TestInfo");
 
-  private static final org.apache.thrift.protocol.TField WHY_FIELD_DESC = new org.apache.thrift.protocol.TField("why", org.apache.thrift.protocol.TType.STRING, (short)1);
+  private static final org.apache.thrift.protocol.TField MESSAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("message", org.apache.thrift.protocol.TType.STRING, (short)1);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
-    schemes.put(StandardScheme.class, new InvalidExcuteExceptionStandardSchemeFactory());
-    schemes.put(TupleScheme.class, new InvalidExcuteExceptionTupleSchemeFactory());
+    schemes.put(StandardScheme.class, new TestInfoStandardSchemeFactory());
+    schemes.put(TupleScheme.class, new TestInfoTupleSchemeFactory());
   }
 
-  public String why; // required
+  public String message; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    WHY((short)1, "why");
+    MESSAGE((short)1, "message");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -60,8 +60,8 @@ public class InvalidExcuteException extends TException implements org.apache.thr
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // WHY
-          return WHY;
+        case 1: // MESSAGE
+          return MESSAGE;
         default:
           return null;
       }
@@ -105,71 +105,71 @@ public class InvalidExcuteException extends TException implements org.apache.thr
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.WHY, new org.apache.thrift.meta_data.FieldMetaData("why", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.MESSAGE, new org.apache.thrift.meta_data.FieldMetaData("message", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(InvalidExcuteException.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(TestInfo.class, metaDataMap);
   }
 
-  public InvalidExcuteException() {
+  public TestInfo() {
   }
 
-  public InvalidExcuteException(
-    String why)
+  public TestInfo(
+    String message)
   {
     this();
-    this.why = why;
+    this.message = message;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public InvalidExcuteException(InvalidExcuteException other) {
-    if (other.isSetWhy()) {
-      this.why = other.why;
+  public TestInfo(TestInfo other) {
+    if (other.isSetMessage()) {
+      this.message = other.message;
     }
   }
 
-  public InvalidExcuteException deepCopy() {
-    return new InvalidExcuteException(this);
+  public TestInfo deepCopy() {
+    return new TestInfo(this);
   }
 
   @Override
   public void clear() {
-    this.why = null;
+    this.message = null;
   }
 
-  public String getWhy() {
-    return this.why;
+  public String getMessage() {
+    return this.message;
   }
 
-  public InvalidExcuteException setWhy(String why) {
-    this.why = why;
+  public TestInfo setMessage(String message) {
+    this.message = message;
     return this;
   }
 
-  public void unsetWhy() {
-    this.why = null;
+  public void unsetMessage() {
+    this.message = null;
   }
 
-  /** Returns true if field why is set (has been assigned a value) and false otherwise */
-  public boolean isSetWhy() {
-    return this.why != null;
+  /** Returns true if field message is set (has been assigned a value) and false otherwise */
+  public boolean isSetMessage() {
+    return this.message != null;
   }
 
-  public void setWhyIsSet(boolean value) {
+  public void setMessageIsSet(boolean value) {
     if (!value) {
-      this.why = null;
+      this.message = null;
     }
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case WHY:
+    case MESSAGE:
       if (value == null) {
-        unsetWhy();
+        unsetMessage();
       } else {
-        setWhy((String)value);
+        setMessage((String)value);
       }
       break;
 
@@ -178,8 +178,8 @@ public class InvalidExcuteException extends TException implements org.apache.thr
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case WHY:
-      return getWhy();
+    case MESSAGE:
+      return getMessage();
 
     }
     throw new IllegalStateException();
@@ -192,8 +192,8 @@ public class InvalidExcuteException extends TException implements org.apache.thr
     }
 
     switch (field) {
-    case WHY:
-      return isSetWhy();
+    case MESSAGE:
+      return isSetMessage();
     }
     throw new IllegalStateException();
   }
@@ -202,21 +202,21 @@ public class InvalidExcuteException extends TException implements org.apache.thr
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof InvalidExcuteException)
-      return this.equals((InvalidExcuteException)that);
+    if (that instanceof TestInfo)
+      return this.equals((TestInfo)that);
     return false;
   }
 
-  public boolean equals(InvalidExcuteException that) {
+  public boolean equals(TestInfo that) {
     if (that == null)
       return false;
 
-    boolean this_present_why = true && this.isSetWhy();
-    boolean that_present_why = true && that.isSetWhy();
-    if (this_present_why || that_present_why) {
-      if (!(this_present_why && that_present_why))
+    boolean this_present_message = true && this.isSetMessage();
+    boolean that_present_message = true && that.isSetMessage();
+    if (this_present_message || that_present_message) {
+      if (!(this_present_message && that_present_message))
         return false;
-      if (!this.why.equals(that.why))
+      if (!this.message.equals(that.message))
         return false;
     }
 
@@ -228,20 +228,20 @@ public class InvalidExcuteException extends TException implements org.apache.thr
     return 0;
   }
 
-  public int compareTo(InvalidExcuteException other) {
+  public int compareTo(TestInfo other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    InvalidExcuteException typedOther = (InvalidExcuteException)other;
+    TestInfo typedOther = (TestInfo)other;
 
-    lastComparison = Boolean.valueOf(isSetWhy()).compareTo(typedOther.isSetWhy());
+    lastComparison = Boolean.valueOf(isSetMessage()).compareTo(typedOther.isSetMessage());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetWhy()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.why, typedOther.why);
+    if (isSetMessage()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.message, typedOther.message);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -263,14 +263,14 @@ public class InvalidExcuteException extends TException implements org.apache.thr
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("InvalidExcuteException(");
+    StringBuilder sb = new StringBuilder("TestInfo(");
     boolean first = true;
 
-    sb.append("why:");
-    if (this.why == null) {
+    sb.append("message:");
+    if (this.message == null) {
       sb.append("null");
     } else {
-      sb.append(this.why);
+      sb.append(this.message);
     }
     first = false;
     sb.append(")");
@@ -298,15 +298,15 @@ public class InvalidExcuteException extends TException implements org.apache.thr
     }
   }
 
-  private static class InvalidExcuteExceptionStandardSchemeFactory implements SchemeFactory {
-    public InvalidExcuteExceptionStandardScheme getScheme() {
-      return new InvalidExcuteExceptionStandardScheme();
+  private static class TestInfoStandardSchemeFactory implements SchemeFactory {
+    public TestInfoStandardScheme getScheme() {
+      return new TestInfoStandardScheme();
     }
   }
 
-  private static class InvalidExcuteExceptionStandardScheme extends StandardScheme<InvalidExcuteException> {
+  private static class TestInfoStandardScheme extends StandardScheme<TestInfo> {
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot, InvalidExcuteException struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot, TestInfo struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TField schemeField;
       iprot.readStructBegin();
       while (true)
@@ -316,10 +316,10 @@ public class InvalidExcuteException extends TException implements org.apache.thr
           break;
         }
         switch (schemeField.id) {
-          case 1: // WHY
+          case 1: // MESSAGE
             if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-              struct.why = iprot.readString();
-              struct.setWhyIsSet(true);
+              struct.message = iprot.readString();
+              struct.setMessageIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
@@ -335,13 +335,13 @@ public class InvalidExcuteException extends TException implements org.apache.thr
       struct.validate();
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot, InvalidExcuteException struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot, TestInfo struct) throws org.apache.thrift.TException {
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (struct.why != null) {
-        oprot.writeFieldBegin(WHY_FIELD_DESC);
-        oprot.writeString(struct.why);
+      if (struct.message != null) {
+        oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
+        oprot.writeString(struct.message);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -350,34 +350,34 @@ public class InvalidExcuteException extends TException implements org.apache.thr
 
   }
 
-  private static class InvalidExcuteExceptionTupleSchemeFactory implements SchemeFactory {
-    public InvalidExcuteExceptionTupleScheme getScheme() {
-      return new InvalidExcuteExceptionTupleScheme();
+  private static class TestInfoTupleSchemeFactory implements SchemeFactory {
+    public TestInfoTupleScheme getScheme() {
+      return new TestInfoTupleScheme();
     }
   }
 
-  private static class InvalidExcuteExceptionTupleScheme extends TupleScheme<InvalidExcuteException> {
+  private static class TestInfoTupleScheme extends TupleScheme<TestInfo> {
 
     @Override
-    public void write(org.apache.thrift.protocol.TProtocol prot, InvalidExcuteException struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol prot, TestInfo struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
-      if (struct.isSetWhy()) {
+      if (struct.isSetMessage()) {
         optionals.set(0);
       }
       oprot.writeBitSet(optionals, 1);
-      if (struct.isSetWhy()) {
-        oprot.writeString(struct.why);
+      if (struct.isSetMessage()) {
+        oprot.writeString(struct.message);
       }
     }
 
     @Override
-    public void read(org.apache.thrift.protocol.TProtocol prot, InvalidExcuteException struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol prot, TestInfo struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
       BitSet incoming = iprot.readBitSet(1);
       if (incoming.get(0)) {
-        struct.why = iprot.readString();
-        struct.setWhyIsSet(true);
+        struct.message = iprot.readString();
+        struct.setMessageIsSet(true);
       }
     }
   }
