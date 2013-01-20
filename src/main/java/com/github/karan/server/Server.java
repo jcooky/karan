@@ -3,6 +3,7 @@ package com.github.karan.server;
 import com.github.jcooky.mina.thrift.TMinaServer;
 import com.github.karan.server.gateway.GatewayImpl;
 import com.github.karan.server.gateway.gen.Gateway;
+import org.apache.thrift.server.TServer;
 
 import java.io.IOException;
 
@@ -14,7 +15,8 @@ import java.io.IOException;
  * To change this template use File | Settings | File Templates.
  */
 public class Server {
-    private TMinaServer server;
+    private int port = 7900;
+    private TServer server;
     private Gateway.Iface gateway ;
 
     public Server() {
@@ -29,9 +31,19 @@ public class Server {
         return gateway;
     }
 
-    public void serve(int port) throws IOException {
-        server = TMinaServer.getServer(port,
-                new Gateway.Processor <Gateway.Iface>(new GatewayImpl()));
+    public void setServer(TServer server) {
+        this.server = server;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public void serve() throws IOException {
+        if (this.server == null) {
+            server = TMinaServer.getServer(port,
+                    new Gateway.Processor <Gateway.Iface>(new GatewayImpl()));
+        }
 
         server.serve();
     }

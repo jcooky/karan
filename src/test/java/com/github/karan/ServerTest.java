@@ -1,6 +1,7 @@
 package com.github.karan;
 
 import com.github.karan.server.Server;
+import com.github.karan.server.gateway.GatewayImpl;
 import com.github.karan.server.gateway.gen.Gateway;
 import com.github.karan.test.TestServiceImpl;
 import com.github.karan.test.gen.TestInfo;
@@ -10,10 +11,16 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.server.TServer;
+import org.apache.thrift.server.TSimpleServer;
+import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TSocket;
+import org.apache.thrift.transport.TTransportFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.nio.ByteBuffer;
@@ -28,6 +35,8 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class ServerTest {
+    private static final Logger logger = LoggerFactory.getLogger(ServerTest.class);
+
     private Gateway.Iface client;
     private TSocket socket;
     private Server server;
@@ -36,7 +45,24 @@ public class ServerTest {
     @Before
     public void setUp() throws Exception {
         server = new Server();
-        server.serve(port);
+//        server.setPort(8081);
+        final TServerSocket serverSocket = new TServerSocket(port);
+        new Thread() {
+            public void run() {
+                try {
+                    serverSocket.listen();
+                } catch(Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }.start();
+        TServer tserver = new TSimpleServer(new TSimpleServer.Args(serverSocket)
+                .transportFactory(new TTransportFactory())
+                .protocolFactory(new TBinaryProtocol.Factory())
+                .processor(new Gateway.Processor(new GatewayImpl()))
+        );
+        server.setServer(tserver);
+        server.serve();
 
         socket = new TSocket("localhost", port);
         socket.open();
@@ -57,9 +83,12 @@ public class ServerTest {
     }
 
     public void testExists(String _ifaceName) throws Exception {
+        logger.info("calling testExists[_ifaceName={}]", _ifaceName);
         String ifaceName = StringUtils.defaultString(_ifaceName, "test");
 
+        logger.info("exists remote call");
         boolean result = client.exists(ifaceName);
+        logger.info("end exists remote call");
         Assert.assertFalse(result);
     }
 
@@ -70,6 +99,7 @@ public class ServerTest {
 
     @Test
     public void testPut() throws Exception {
+        logger.info("start testPut");
         List<String> names = new ArrayList<String>();
         names.add(TestInfo.class.getName());
         names.add(TestService.class.getName());
@@ -81,7 +111,7 @@ public class ServerTest {
         binaries.add(ByteBuffer.wrap(FileUtils.readFileToByteArray(new File("target/test-classes/com/github/karan/test/TestServiceImpl.class"))));
 
         client.put(TestService.class.getName(), TestServiceImpl.class.getName(), names, binaries);
-
+        logger.info("calling testExists");
         testExists(TestService.class.getName());
     }
 }
