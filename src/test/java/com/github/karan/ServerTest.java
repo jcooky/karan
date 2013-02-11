@@ -1,7 +1,6 @@
 package com.github.karan;
 
 import com.github.karan.server.Server;
-import com.github.karan.server.gateway.GatewayImpl;
 import com.github.karan.server.gateway.gen.Gateway;
 import com.github.karan.test.TestServiceImpl;
 import com.github.karan.test.gen.TestInfo;
@@ -11,9 +10,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.thrift.protocol.TCompactProtocol;
 import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.server.TServer;
-import org.apache.thrift.server.TSimpleServer;
-import org.apache.thrift.transport.*;
+import org.apache.thrift.transport.TFramedTransport;
+import org.apache.thrift.transport.TSocket;
+import org.apache.thrift.transport.TTransport;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,26 +42,11 @@ public class ServerTest {
     @Before
     public void setUp() throws Exception {
         server = new Server();
-//        server.setPort(8081);
-        final TServerSocket serverSocket = new TServerSocket(port);
-        new Thread() {
-            public void run() {
-                try {
-                    serverSocket.listen();
-                } catch(Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }.start();
-        TServer tserver = new TSimpleServer(new TSimpleServer.Args(serverSocket)
-                .transportFactory(new TTransportFactory())
-                .protocolFactory(new TCompactProtocol.Factory())
-                .processor(new Gateway.Processor(new GatewayImpl()))
-        );
-        server.setServer(tserver);
+        server.setPort(8081);
         server.serve();
 
         socket = new TSocket("localhost", port);
+        socket = new TFramedTransport(socket);
         socket.open();
         TProtocol protocol = new TCompactProtocol(socket);
         client = new Gateway.Client(protocol);

@@ -1,8 +1,8 @@
 package com.github.karan.server.gateway;
 
+import com.github.karan.server.classloader.KClassLoader;
 import com.github.karan.server.gateway.gen.Gateway;
 import com.github.karan.server.gateway.gen.InvalidExcuteException;
-import com.github.karan.server.utils.ByteArrayClassLoader;
 import com.github.karan.server.utils.ListableByteOutputStream;
 import org.apache.thrift.TException;
 import org.apache.thrift.TProcessor;
@@ -24,7 +24,7 @@ import java.util.Map;
 public class GatewayImpl implements Gateway.Iface {
     private static final Logger logger = LoggerFactory.getLogger(GatewayImpl.class);
 
-    private ByteArrayClassLoader classLoader = new ByteArrayClassLoader();
+    private KClassLoader classLoader = new KClassLoader();
     private Map<String, TProcessor> processors = new HashMap<String, TProcessor>();
 
     @Override
