@@ -9,13 +9,11 @@ import com.github.karan.test.gen.TestService;
 import junit.framework.Assert;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.protocol.TCompactProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TSimpleServer;
-import org.apache.thrift.transport.TServerSocket;
-import org.apache.thrift.transport.TSocket;
-import org.apache.thrift.transport.TTransportFactory;
+import org.apache.thrift.transport.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +36,7 @@ public class ServerTest {
     private static final Logger logger = LoggerFactory.getLogger(ServerTest.class);
 
     private Gateway.Iface client;
-    private TSocket socket;
+    private TTransport socket;
     private Server server;
     private int port = 8081;
 
@@ -58,7 +56,7 @@ public class ServerTest {
         }.start();
         TServer tserver = new TSimpleServer(new TSimpleServer.Args(serverSocket)
                 .transportFactory(new TTransportFactory())
-                .protocolFactory(new TBinaryProtocol.Factory())
+                .protocolFactory(new TCompactProtocol.Factory())
                 .processor(new Gateway.Processor(new GatewayImpl()))
         );
         server.setServer(tserver);
@@ -66,7 +64,7 @@ public class ServerTest {
 
         socket = new TSocket("localhost", port);
         socket.open();
-        TProtocol protocol = new TBinaryProtocol(socket);
+        TProtocol protocol = new TCompactProtocol(socket);
         client = new Gateway.Client(protocol);
     }
 

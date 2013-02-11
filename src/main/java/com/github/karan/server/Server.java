@@ -1,9 +1,14 @@
 package com.github.karan.server;
 
+import com.github.jcooky.mina.thrift.TIoAcceptorServerTransport;
+import com.github.jcooky.mina.thrift.TIoSessionTransport;
 import com.github.jcooky.mina.thrift.TMinaServer;
 import com.github.karan.server.gateway.GatewayImpl;
 import com.github.karan.server.gateway.gen.Gateway;
+import org.apache.thrift.TProcessor;
+import org.apache.thrift.protocol.TCompactProtocol;
 import org.apache.thrift.server.TServer;
+import org.apache.thrift.transport.TTransportFactory;
 
 import java.io.IOException;
 
@@ -41,8 +46,13 @@ public class Server {
 
     public void serve() throws IOException {
         if (this.server == null) {
-            server = TMinaServer.getServer(port,
-                    new Gateway.Processor <Gateway.Iface>(new GatewayImpl()));
+            TIoAcceptorServerTransport socket = new TIoAcceptorServerTransport(port);
+            TProcessor processor = new Gateway.Processor <Gateway.Iface>(new GatewayImpl());
+            server = new TMinaServer(new TMinaServer.Args(socket)
+                    .processor(processor)
+                    .protocolFactory(new TCompactProtocol.Factory())
+                    .inputTransportFactory(new TIoSessionTransport.InputTransportFactory())
+                    .outputTransportFactory(new TTransportFactory()));
         }
 
         server.serve();
