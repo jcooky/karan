@@ -1,16 +1,5 @@
 package com.github.karan.server.gateway;
 
-import com.github.karan.server.classloader.KClassLoader;
-import com.github.karan.server.gateway.gen.Gateway;
-import com.github.karan.server.gateway.gen.InvalidExcuteException;
-import com.github.karan.server.utils.ListableByteOutputStream;
-import org.apache.thrift.TException;
-import org.apache.thrift.TProcessor;
-import org.apache.thrift.protocol.TBinaryProtocol;
-import org.apache.thrift.transport.TIOStreamTransport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
@@ -21,10 +10,23 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.thrift.TException;
+import org.apache.thrift.TProcessor;
+import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.transport.TIOStreamTransport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.github.karan.server.classloader.KClassLoader;
+import com.github.karan.server.classloader.impl.KClassLoaderImpl;
+import com.github.karan.server.gateway.gen.Gateway;
+import com.github.karan.server.gateway.gen.InvalidExcuteException;
+import com.github.karan.server.utils.ListableByteOutputStream;
+
 public class GatewayImpl implements Gateway.Iface {
     private static final Logger logger = LoggerFactory.getLogger(GatewayImpl.class);
 
-    private KClassLoader classLoader = new KClassLoader();
+    private KClassLoader classLoader = new KClassLoaderImpl();
     private Map<String, TProcessor> processors = new HashMap<String, TProcessor>();
 
     @Override
@@ -55,7 +57,7 @@ public class GatewayImpl implements Gateway.Iface {
         try {
             Class<?> ifaceCls = null;
             Class<? extends TProcessor> processorCls = null;
-            for (Class<?> c : Class.forName(interfaceName, false, classLoader).getDeclaredClasses()) {
+            for (Class<?> c : Class.forName(interfaceName).getDeclaredClasses()) {
                 if(c.getName().endsWith("Iface")) {
                     ifaceCls = c;
                 } else if(c.getName().endsWith("Processor")) {
@@ -65,7 +67,7 @@ public class GatewayImpl implements Gateway.Iface {
 
             if (ifaceCls != null && processorCls != null) {
                 Constructor<?> constructor = processorCls.getConstructor(ifaceCls);
-                TProcessor processor = processorCls.cast(constructor.newInstance(Class.forName(implClassName, true, classLoader)));
+                TProcessor processor = processorCls.cast(constructor.newInstance(Class.forName(implClassName).newInstance()));
                 processors.put(interfaceName, processor);
             }
         } catch (ClassNotFoundException e) {

@@ -1,28 +1,39 @@
 package com.github.karan.client;
 
-
-import com.github.karan.server.gateway.gen.Gateway;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TSocket;
+import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
 
+import com.github.karan.server.gateway.gen.Gateway;
+
 public class Client {
-    private static final int SOCKET_TIMEOUT = 10 * 1000;
-    private static Gateway.Iface INSTANCE = null;
+	private static final int SOCKET_TIMEOUT = 10 * 1000;
+	private Gateway.Iface clientIface = null;
 
-    public static Gateway.Iface getGayeway(String host, int port) throws TTransportException {
-        if (INSTANCE == null) {
-            final TSocket socket = new TSocket(host, port, SOCKET_TIMEOUT);
-            final TProtocol protocol = new TBinaryProtocol(socket);
-            final Gateway.Client client = new Gateway.Client(protocol);
+	private TTransport transport;
 
-            //The transport must be opened before you can begin using
-            socket.open();
+	public Gateway.Iface getGayeway() throws TTransportException {
+		return clientIface;
+	}
 
-            INSTANCE = client;
-        }
+	public void connect(String host, int port) throws TTransportException {
+		transport = new TSocket(host, port, SOCKET_TIMEOUT);
+		transport = new TFramedTransport(transport);
+		final TProtocol protocol = new TBinaryProtocol(transport);
+		final Gateway.Client client = new Gateway.Client(protocol);
 
-        return INSTANCE;
-    }
+		// The transport must be opened before you can begin using
+		transport.open();
+
+		clientIface = client;
+	}
+
+	public void close() {
+		if (transport != null && transport.isOpen()) {
+			transport.close();
+		}
+	}
 }
